@@ -1,0 +1,12 @@
+{
+  "name": "couple-space-miniprogram",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/wechat-miniprogram": "^3.4.0",
+    "typescript": "^5.8.0"
+  }
+}

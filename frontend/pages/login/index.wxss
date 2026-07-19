@@ -26,6 +26,21 @@
   gap: 24rpx;
 }
 
+.state,
+.error {
+  display: block;
+  color: #6b7280;
+}
+
+.state button {
+  margin-top: 32rpx;
+}
+
+.error {
+  margin-top: 24rpx;
+  color: #b42318;
+}
+
 input {
   height: 88rpx;
   padding: 0 24rpx;

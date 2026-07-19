@@ -1,8 +1,10 @@
 from fastapi.testclient import TestClient
+import jwt
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.api.routes.auth import get_wechat_client
+from app.core.config import get_settings
 from app.core.security import hash_password
 from app.db.models import User, WeChatIdentity
 from app.main import app
@@ -90,6 +92,19 @@ def test_existing_binding_cannot_be_taken_by_another_account(
 
 def test_private_api_rejects_missing_access_token(client: TestClient) -> None:
     response = client.get("/v1/auth/me")
+
+    assert response.status_code == 401
+
+
+def test_private_api_rejects_expired_access_token(client: TestClient) -> None:
+    settings = get_settings()
+    expired_token = jwt.encode(
+        {"sub": "missing-user", "typ": "access", "exp": 1},
+        settings.jwt_secret,
+        algorithm=settings.jwt_algorithm,
+    )
+
+    response = client.get("/v1/auth/me", headers={"Authorization": f"Bearer {expired_token}"})
 
     assert response.status_code == 401
 

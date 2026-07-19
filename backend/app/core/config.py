@@ -16,6 +16,14 @@ class Settings(BaseSettings):
     wechat_app_id: str = ""
     wechat_app_secret: str = ""
     wechat_code2session_url: str = "https://api.weixin.qq.com/sns/jscode2session"
+    wechat_subscription_template_check_in: str = ""
+    wechat_subscription_template_meal_request: str = ""
+    review_first_username: str = ""
+    review_first_display_name: str = ""
+    review_first_password: str = ""
+    review_second_username: str = ""
+    review_second_display_name: str = ""
+    review_second_password: str = ""
 
     model_config = SettingsConfigDict(
         env_file=".env",

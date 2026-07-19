@@ -1,0 +1,7 @@
+<view class="page">
+  <text class="title">通知设置</text>
+  <text class="description">仅在你主动允许后，报备和点餐才会尝试发送微信服务通知。</text>
+  <button data-template-key="check_in" bindtap="requestSubscription">开启报备通知</button>
+  <button data-template-key="meal_request" bindtap="requestSubscription">开启点餐通知</button>
+  <text wx:if="{{statusMessage}}" class="status">{{statusMessage}}</text>
+</view>

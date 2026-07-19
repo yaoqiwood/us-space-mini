@@ -13,3 +13,12 @@
   margin-top: 20rpx;
   color: #6b7280;
 }
+
+button {
+  margin-top: 28rpx;
+}
+
+.secondary {
+  color: #4b5563;
+  background: #ffffff;
+}

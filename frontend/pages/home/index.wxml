@@ -1,4 +1,9 @@
 <view class="page">
   <text class="title">情侣空间</text>
-  <text class="message">{{message}}</text>
+  <text wx:if="{{loading}}" class="message">正在读取账户</text>
+  <block wx:else>
+    <text class="message">你好，{{displayName}}</text>
+    <button bindtap="openNotificationSettings">通知设置</button>
+    <button class="secondary" bindtap="onLogout">退出登录</button>
+  </block>
 </view>

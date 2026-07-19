@@ -18,5 +18,20 @@ services:
       timeout: 5s
       retries: 20
 
+  api:
+    build:
+      context: ./backend
+    container_name: couple-space-api
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: mysql+pymysql://couple_space:couple_space_dev_only@mysql:3306/couple_space
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8000:8000"
+
 volumes:
   mysql_data:

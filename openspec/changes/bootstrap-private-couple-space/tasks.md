@@ -10,7 +10,7 @@
 
 - [x] 2.1 Define SQLAlchemy models and Alembic migrations for users, password credentials, WeChat OpenID bindings, refresh sessions, couples, and couple memberships.
 - [x] 2.2 Enforce the one-active-couple, two-active-member production invariant during account and membership provisioning.
-- [ ] 2.3 Implement Argon2id credential provisioning and a separate review-data seed path that never exposes production accounts.
+- [x] 2.3 Implement Argon2id credential provisioning and a separate review-data seed path that never exposes production accounts.
 - [x] 2.4 Implement the server-side WeChat `code2Session` client with retry-safe error handling and no session-key exposure.
 - [x] 2.5 Implement `POST /v1/auth/wechat`, `POST /v1/auth/bind`, token refresh, logout, and authenticated-current-user endpoints.
 - [x] 2.6 Add FastAPI authentication and membership dependencies that scope all protected queries to the current member and couple.
@@ -18,11 +18,11 @@
 
 ## 3. Shared data and notification foundation
 
-- [ ] 3.1 Define migrations and models for in-app notifications, per-user template consent, and external delivery attempts.
-- [ ] 3.2 Implement recipient-owned notification listing and read-state endpoints with couple-bound authorization.
-- [ ] 3.3 Implement the WeChat subscription-message client and a background delivery worker that records all delivery outcomes.
-- [ ] 3.4 Implement the Mini Program subscription-preference control using a user-triggered `wx.requestSubscribeMessage` call and send its result to the backend.
-- [ ] 3.5 Test notification ownership, consent denial, consent acceptance, and external delivery failure fallback.
+- [x] 3.1 Define migrations and models for in-app notifications, per-user template consent, and external delivery attempts.
+- [x] 3.2 Implement recipient-owned notification listing and read-state endpoints with couple-bound authorization.
+- [x] 3.3 Implement the WeChat subscription-message client and a background delivery worker that records all delivery outcomes.
+- [x] 3.4 Implement the Mini Program subscription-preference control using a user-triggered `wx.requestSubscribeMessage` call and send its result to the backend.
+- [x] 3.5 Test notification ownership, consent denial, consent acceptance, and external delivery failure fallback.
 
 ## 4. Todo and wish capabilities
 

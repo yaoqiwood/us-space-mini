@@ -1,0 +1,46 @@
+schema: spec-driven
+
+context: |
+  Product: A private WeChat Mini Program for one couple only. It is not a
+  multi-tenant social product and does not allow public self-registration.
+
+  Frontend: Native WeChat Mini Program with TypeScript, WXML, WXSS, and the
+  current stable Mini Program base library. Use wx.login for WeChat identity.
+  Do not request profile, phone, location, or other personal-data permissions
+  unless a later approved requirement explicitly needs them.
+
+  Backend: FastAPI REST API, Python 3.12+, MySQL 8, SQLAlchemy 2, Alembic, and
+  JWT access tokens. Passwords use Argon2id hashes. Secrets, app credentials,
+  tokens, and database passwords are environment configuration only.
+
+  Identity: A pre-provisioned account-password login is required for initial
+  account binding. After successful credential verification, bind the current
+  WeChat OpenID to the account. Future launches use wx.login plus the binding
+  to establish a session. No public sign-up is provided. Production permits
+  exactly one active couple with two members.
+
+  Notifications: WeChat subscription messages are opt-in per recipient and
+  template. The Mini Program must request permission from a user-triggered
+  action and the backend sends only after recorded consent. In-app unread state
+  remains the fallback when a notification is unavailable.
+
+  Privacy and review: Publish a privacy guide that matches actual API usage.
+  A review submission must include test credentials that can reach every
+  declared feature. Do not include sexual, explicit, or other disallowed
+  content in account metadata, UI, or seeded data.
+
+  Engineering: All externally supplied identifiers are validated and all
+  resource access is scoped to the authenticated account's couple. Use UTC in
+  storage and convert only at presentation boundaries. Add automated tests for
+  authorization and important domain state transitions.
+
+rules:
+  proposal:
+    - Keep the proposal focused on product scope and capability boundaries.
+    - List every new capability using a stable kebab-case name.
+  design:
+    - Describe data ownership, authorization boundaries, and WeChat API failure handling.
+  specs:
+    - Include authorization behavior and at least one success and one denial or edge scenario where applicable.
+  tasks:
+    - Order work so database migrations and authorization are complete before feature UI.

@@ -1,20 +1,20 @@
 ## 1. Project and deployment foundation
 
-- [ ] 1.1 Create the native TypeScript WeChat Mini Program project structure and configure development, review, and production API base URLs.
-- [ ] 1.2 Create the FastAPI application structure, health endpoint, configuration loading, structured logging, and dependency definitions.
-- [ ] 1.3 Add Python dependencies for FastAPI, SQLAlchemy 2, Alembic, MySQL, JWT handling, Argon2id, and HTTP requests to WeChat APIs.
-- [ ] 1.4 Provision MySQL 8 configuration, HTTPS deployment configuration, secret environment variables, and Mini Program request-domain documentation.
-- [ ] 1.5 Add automated test configuration for backend API and domain tests.
+- [x] 1.1 Create the native TypeScript WeChat Mini Program project structure and configure development, review, and production API base URLs.
+- [x] 1.2 Create the FastAPI application structure, health endpoint, configuration loading, structured logging, and dependency definitions.
+- [x] 1.3 Add Python dependencies for FastAPI, SQLAlchemy 2, Alembic, MySQL, JWT handling, Argon2id, and HTTP requests to WeChat APIs.
+- [x] 1.4 Provision MySQL 8 configuration, HTTPS deployment configuration, secret environment variables, and Mini Program request-domain documentation.
+- [x] 1.5 Add automated test configuration for backend API and domain tests.
 
 ## 2. Identity and workspace data model
 
-- [ ] 2.1 Define SQLAlchemy models and Alembic migrations for users, password credentials, WeChat OpenID bindings, refresh sessions, couples, and couple memberships.
-- [ ] 2.2 Enforce the one-active-couple, two-active-member production invariant during account and membership provisioning.
+- [x] 2.1 Define SQLAlchemy models and Alembic migrations for users, password credentials, WeChat OpenID bindings, refresh sessions, couples, and couple memberships.
+- [x] 2.2 Enforce the one-active-couple, two-active-member production invariant during account and membership provisioning.
 - [ ] 2.3 Implement Argon2id credential provisioning and a separate review-data seed path that never exposes production accounts.
-- [ ] 2.4 Implement the server-side WeChat `code2Session` client with retry-safe error handling and no session-key exposure.
-- [ ] 2.5 Implement `POST /v1/auth/wechat`, `POST /v1/auth/bind`, token refresh, logout, and authenticated-current-user endpoints.
-- [ ] 2.6 Add FastAPI authentication and membership dependencies that scope all protected queries to the current member and couple.
-- [ ] 2.7 Test valid sessions, invalid credentials, OpenID binding conflicts, session expiry, and unauthenticated API rejection.
+- [x] 2.4 Implement the server-side WeChat `code2Session` client with retry-safe error handling and no session-key exposure.
+- [x] 2.5 Implement `POST /v1/auth/wechat`, `POST /v1/auth/bind`, token refresh, logout, and authenticated-current-user endpoints.
+- [x] 2.6 Add FastAPI authentication and membership dependencies that scope all protected queries to the current member and couple.
+- [x] 2.7 Test valid sessions, invalid credentials, OpenID binding conflicts, session expiry, and unauthenticated API rejection.
 
 ## 3. Shared data and notification foundation
 

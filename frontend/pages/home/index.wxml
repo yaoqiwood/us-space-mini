@@ -1,0 +1,4 @@
+<view class="page">
+  <text class="title">情侣空间</text>
+  <text class="message">{{message}}</text>
+</view>

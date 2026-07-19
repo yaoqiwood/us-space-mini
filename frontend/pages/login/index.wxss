@@ -1,0 +1,35 @@
+.page {
+  min-height: 100vh;
+  padding: 96rpx 48rpx;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 88rpx;
+}
+
+.title {
+  display: block;
+  font-size: 52rpx;
+  font-weight: 700;
+}
+
+.subtitle {
+  display: block;
+  margin-top: 16rpx;
+  color: #6b7280;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+input {
+  height: 88rpx;
+  padding: 0 24rpx;
+  border: 1rpx solid #d1d5db;
+  border-radius: 8rpx;
+  background: #ffffff;
+}

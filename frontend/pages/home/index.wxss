@@ -1,0 +1,15 @@
+.page {
+  padding: 48rpx;
+}
+
+.title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.message {
+  display: block;
+  margin-top: 20rpx;
+  color: #6b7280;
+}

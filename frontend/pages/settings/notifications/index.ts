@@ -23,7 +23,10 @@ Page({
         wx.requestSubscribeMessage({ tmplIds: [templateId], success: resolve, fail: reject });
       });
       const subscriptionStatus = result[templateId] === "accept" ? "accept" : "reject";
-      await request(`/notifications/subscriptions/${templateKey}`, "PUT", { status: subscriptionStatus });
+      await request(`/notifications/subscriptions/${templateKey}`, {
+        method: "PUT",
+        data: { status: subscriptionStatus },
+      });
       this.setData({ statusMessage: subscriptionStatus === "accept" ? "已开启通知" : "未开启通知" });
     } catch {
       this.setData({ statusMessage: "无法请求通知授权" });

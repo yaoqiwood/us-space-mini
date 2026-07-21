@@ -55,7 +55,11 @@ export function clearSession(): void {
 
 export async function loginWithWeChat(): Promise<WeChatLoginResult> {
   const code = await getLoginCode();
-  const result = await request<WeChatLoginResult>("/auth/wechat", "POST", { code }, false);
+  const result = await request<WeChatLoginResult>("/auth/wechat", {
+    method: "POST",
+    data: { code },
+    authenticated: false,
+  });
   if (result.status === "authenticated") {
     saveSession(result);
   }
@@ -67,11 +71,15 @@ export async function bindCurrentWeChatAccount(
   password: string,
   bindingToken: string,
 ): Promise<void> {
-  const session = await request<AuthenticatedSession>("/auth/bind", "POST", {
-    username,
-    password,
-    binding_token: bindingToken,
-  }, false);
+  const session = await request<AuthenticatedSession>("/auth/bind", {
+    method: "POST",
+    data: {
+      username,
+      password,
+      binding_token: bindingToken,
+    },
+    authenticated: false,
+  });
   saveSession(session);
 }
 
@@ -81,9 +89,11 @@ export async function refreshSession(): Promise<boolean> {
     return false;
   }
   try {
-    const session = await request<AuthenticatedSession>("/auth/refresh", "POST", {
-      refresh_token: refreshToken,
-    }, false);
+    const session = await request<AuthenticatedSession>("/auth/refresh", {
+      method: "POST",
+      data: { refresh_token: refreshToken },
+      authenticated: false,
+    });
     saveSession(session);
     return true;
   } catch {

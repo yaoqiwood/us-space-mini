@@ -14,6 +14,24 @@
   color: #6b7280;
 }
 
+.backend-status {
+  margin-top: 20rpx;
+  padding: 16rpx 20rpx;
+  border-radius: 8rpx;
+  color: #6b7280;
+  background: #f3f4f6;
+}
+
+.backend-status.online {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.backend-status.error {
+  color: #b42318;
+  background: #fef2f2;
+}
+
 button {
   margin-top: 28rpx;
 }

@@ -11,7 +11,7 @@
   </view>
   <view wx:else class="state">
     <text>{{errorMessage || "无法验证微信身份"}}</text>
-    <button bindtap="beginWeChatLogin">重试</button>
+    <button bindtap="verifyBackendAndLogin">重试</button>
   </view>
   <text wx:if="{{errorMessage && bindingToken}}" class="error">{{errorMessage}}</text>
 </view>

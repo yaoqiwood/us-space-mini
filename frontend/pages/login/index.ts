@@ -1,3 +1,4 @@
+import { checkApiHealth } from "../../utils/api";
 import { bindCurrentWeChatAccount, loginWithWeChat } from "../../utils/session";
 
 Page({
@@ -11,7 +12,7 @@ Page({
   },
 
   onLoad() {
-    this.beginWeChatLogin();
+    this.verifyBackendAndLogin();
   },
 
   onUsernameInput(event: WechatMiniprogram.Input) {
@@ -38,9 +39,21 @@ Page({
     }
   },
 
+  async verifyBackendAndLogin() {
+    this.setData({ checkingWeChat: true, errorMessage: "", bindingToken: "" });
+    try {
+      await checkApiHealth();
+    } catch (error) {
+      this.setData({ errorMessage: `无法连接后端服务：${(error as Error).message}` });
+      this.setData({ checkingWeChat: false });
+      return;
+    }
+    await this.beginWeChatLogin();
+  },
+
   async onLogin() {
     if (!this.data.bindingToken) {
-      this.beginWeChatLogin();
+      this.verifyBackendAndLogin();
       return;
     }
     this.setData({ submitting: true, errorMessage: "" });

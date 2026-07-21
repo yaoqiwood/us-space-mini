@@ -1,5 +1,8 @@
 <view class="page">
   <text class="title">情侣空间</text>
+  <view class="backend-status {{backendStatus}}">
+    <text>{{backendMessage}}</text>
+  </view>
   <text wx:if="{{loading}}" class="message">正在读取账户</text>
   <block wx:else>
     <text class="message">你好，{{displayName}}</text>

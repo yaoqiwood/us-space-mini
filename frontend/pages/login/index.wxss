@@ -1,50 +1,262 @@
 .page {
+  position: relative;
   min-height: 100vh;
-  padding: 96rpx 48rpx;
+  overflow: hidden;
+  padding: 58rpx 48rpx 56rpx;
   box-sizing: border-box;
+  color: #4b3528;
+  background: #fcf6ec;
 }
 
-.header {
-  margin-bottom: 88rpx;
+.brand-lockup {
+  position: relative;
+  z-index: 1;
 }
 
-.title {
+.brand,
+.subtitle,
+.scene-title,
+.scene-caption,
+.auth-title,
+.auth-copy,
+.auth-hint,
+.footer {
   display: block;
-  font-size: 52rpx;
+}
+
+.brand {
+  font-size: 46rpx;
   font-weight: 700;
+  line-height: 1.2;
+}
+
+.heart,
+.home-heart {
+  color: #f49b79;
+}
+
+.heart {
+  font-size: 37rpx;
 }
 
 .subtitle {
-  display: block;
-  margin-top: 16rpx;
-  color: #6b7280;
+  margin-top: 13rpx;
+  color: #927d6c;
+  font-size: 25rpx;
 }
 
+.welcome-scene {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 580rpx;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 30rpx;
+  box-sizing: border-box;
+}
+
+.home-outline {
+  display: block;
+  width: 460rpx;
+  height: 408rpx;
+}
+
+.scene-title {
+  margin-top: 20rpx;
+  color: #9b6d4e;
+  font-family: cursive;
+  font-size: 54rpx;
+  font-weight: 700;
+}
+
+.scene-caption {
+  margin-top: 8rpx;
+  color: #9b806b;
+  font-size: 25rpx;
+}
+
+.auth-panel {
+  position: relative;
+  z-index: 1;
+  min-height: 254rpx;
+  padding: 42rpx 40rpx 34rpx;
+  border: 1rpx solid #f4e6d6;
+  border-radius: 30rpx;
+  box-sizing: border-box;
+  background: rgba(255, 254, 251, 0.9);
+  box-shadow: 0 12rpx 30rpx rgba(159, 113, 69, 0.08);
+}
+
+.auth-state,
 .form {
   display: flex;
   flex-direction: column;
-  gap: 24rpx;
+  align-items: center;
 }
 
-.state,
+.auth-title {
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.auth-copy {
+  margin-top: 14rpx;
+  color: #9d8f85;
+  font-size: 23rpx;
+}
+
+.orbit-loader {
+  position: relative;
+  width: 112rpx;
+  height: 54rpx;
+  margin: 26rpx 0 20rpx;
+  border: 5rpx solid #fde6bd;
+  border-radius: 50%;
+  box-sizing: border-box;
+  transform: rotate(-14deg);
+}
+
+.orbit-loader::after {
+  position: absolute;
+  top: 8rpx;
+  left: 29rpx;
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  background: #ffe2ae;
+  content: "";
+}
+
+.orbit-dot {
+  position: absolute;
+  top: -12rpx;
+  right: 2rpx;
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: #f5b687;
+  animation: orbit-pulse 1.3s ease-in-out infinite;
+}
+
+.auth-hint {
+  color: #b7a59a;
+  font-size: 21rpx;
+}
+
+.form {
+  align-items: stretch;
+}
+
+.form .auth-title,
+.form .auth-copy {
+  text-align: center;
+}
+
+.login-input {
+  width: 100%;
+  height: 78rpx;
+  margin-top: 22rpx;
+  padding: 0 22rpx;
+  border: 1rpx solid #eedbca;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+  color: #4b3528;
+  font-size: 25rpx;
+  background: #fffdf9;
+}
+
+.login-button,
+.retry-button {
+  margin-top: 26rpx;
+  border: 0;
+  border-radius: 16rpx;
+  color: #ffffff;
+  font-size: 26rpx;
+  line-height: 82rpx;
+  background: #ee9b78;
+}
+
+.login-button::after,
+.retry-button::after {
+  border: 0;
+}
+
 .error {
-  display: block;
-  color: #6b7280;
+  margin-top: 18rpx;
+  color: #d87865;
+  font-size: 21rpx;
+  text-align: center;
 }
 
-.state button {
-  margin-top: 32rpx;
+.error-state .auth-copy {
+  max-width: 430rpx;
+  text-align: center;
 }
 
-.error {
-  margin-top: 24rpx;
-  color: #b42318;
+.footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 42rpx;
+  color: #c29b7d;
+  font-size: 20rpx;
+  text-align: center;
 }
 
-input {
-  height: 88rpx;
-  padding: 0 24rpx;
-  border: 1rpx solid #d1d5db;
-  border-radius: 8rpx;
-  background: #ffffff;
+.star {
+  position: absolute;
+  z-index: 0;
+  color: #f9d9a8;
+  font-size: 36rpx;
+}
+
+.star-one {
+  top: 290rpx;
+  right: 98rpx;
+}
+
+.star-two {
+  top: 470rpx;
+  left: 76rpx;
+  font-size: 24rpx;
+}
+
+.planet {
+  position: absolute;
+  z-index: 0;
+  width: 52rpx;
+  height: 52rpx;
+  border: 3rpx solid #fde4b9;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.planet::after {
+  position: absolute;
+  top: 22rpx;
+  left: -14rpx;
+  width: 72rpx;
+  height: 18rpx;
+  border: 3rpx solid #fde4b9;
+  border-radius: 50%;
+  box-sizing: border-box;
+  content: "";
+  transform: rotate(-24deg);
+}
+
+.planet-one {
+  top: 364rpx;
+  left: -8rpx;
+}
+
+.planet-two {
+  top: 196rpx;
+  right: 28rpx;
+  transform: scale(0.58);
+}
+
+@keyframes orbit-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.75); }
+  50% { opacity: 1; transform: scale(1); }
 }

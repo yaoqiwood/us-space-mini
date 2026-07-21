@@ -1,17 +1,43 @@
 <view class="page">
-  <view class="header">
-    <text class="title">Couple Space</text>
-    <text class="subtitle">仅限已配置的两位成员使用</text>
+  <view class="star star-one">✦</view>
+  <view class="star star-two">✧</view>
+  <view class="planet planet-one"></view>
+  <view class="planet planet-two"></view>
+
+  <view class="brand-lockup">
+    <text class="brand">MikYao星球 <text class="heart">♥</text></text>
+    <text class="subtitle">属于两个人的小小宇宙 ✨</text>
   </view>
-  <view wx:if="{{checkingWeChat}}" class="state">正在验证微信身份</view>
-  <view wx:elif="{{bindingToken}}" class="form">
-    <input placeholder="账号" value="{{username}}" bindinput="onUsernameInput" />
-    <input password placeholder="密码" value="{{password}}" bindinput="onPasswordInput" />
-    <button type="primary" loading="{{submitting}}" bindtap="onLogin">登录并绑定微信</button>
+
+  <view class="welcome-scene">
+    <image class="home-outline" src="/assets/prehome-house.png" mode="aspectFit" />
+    <text class="scene-title">MikYao星球</text>
+    <text class="scene-caption">属于我们的小宇宙 ✨</text>
   </view>
-  <view wx:else class="state">
-    <text>{{errorMessage || "无法验证微信身份"}}</text>
-    <button bindtap="verifyBackendAndLogin">重试</button>
+
+  <view class="auth-panel">
+    <view wx:if="{{checkingWeChat}}" class="auth-state">
+      <text class="auth-title">欢迎来到我们的星球</text>
+      <text class="auth-copy">正在验证你的身份...</text>
+      <view class="orbit-loader"><view class="orbit-dot"></view></view>
+      <text class="auth-hint">正在获取你的信息</text>
+    </view>
+
+    <view wx:elif="{{bindingToken}}" class="form">
+      <text class="auth-title">欢迎来到我们的星球</text>
+      <text class="auth-copy">请登录账号，完成微信身份绑定</text>
+      <input class="login-input" placeholder="账号" value="{{username}}" bindinput="onUsernameInput" />
+      <input class="login-input" password placeholder="密码" value="{{password}}" bindinput="onPasswordInput" />
+      <button class="login-button" loading="{{submitting}}" bindtap="onLogin">登录并进入星球</button>
+      <text wx:if="{{errorMessage}}" class="error">{{errorMessage}}</text>
+    </view>
+
+    <view wx:else class="auth-state error-state">
+      <text class="auth-title">暂时无法抵达星球</text>
+      <text class="auth-copy">{{errorMessage || "无法验证微信身份"}}</text>
+      <button class="retry-button" bindtap="verifyBackendAndLogin">重新尝试</button>
+    </view>
   </view>
-  <text wx:if="{{errorMessage && bindingToken}}" class="error">{{errorMessage}}</text>
+
+  <text class="footer">♥ MikYao星球 · 只为我们而存在 ♥</text>
 </view>

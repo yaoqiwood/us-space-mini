@@ -8,6 +8,19 @@ Page({
     errorMessage: "",
     backendStatus: "checking",
     backendMessage: "正在连接后端服务",
+    quickActions: [
+      { key: "todos", icon: "☷", label: "待办清单", tone: "peach" },
+      { key: "wishes", icon: "☆", label: "愿望清单", tone: "gold" },
+      { key: "anniversary", icon: "♡", label: "纪念日", tone: "rose" },
+      { key: "meal", icon: "♨", label: "今天吃什么", tone: "mint" },
+      { key: "checkin", icon: "⌾", label: "一键报备", tone: "sky" },
+      { key: "journal", icon: "▤", label: "日常记录", tone: "lilac" },
+    ],
+    todayPlans: [
+      { title: "一起吃早餐", emoji: "🍞", time: "08:30" },
+      { title: "一起去图书馆", emoji: "📚", time: "14:00" },
+      { title: "晚上一起散步", emoji: "🌿", time: "20:00" },
+    ],
   },
 
   onShow() {
@@ -46,6 +59,25 @@ Page({
 
   openNotificationSettings() {
     wx.navigateTo({ url: "/pages/settings/notifications/index" });
+  },
+
+  onQuickAction(event: WechatMiniprogram.BaseEvent) {
+    const key = event.currentTarget.dataset.key as string;
+    if (key === "checkin") {
+      this.openNotificationSettings();
+      return;
+    }
+    wx.showToast({ title: "功能正在准备中", icon: "none" });
+  },
+
+  onAddPlan() {
+    wx.showToast({ title: "待办功能即将开放", icon: "none" });
+  },
+
+  onTabTap(event: WechatMiniprogram.BaseEvent) {
+    if (event.currentTarget.dataset.tab !== "home") {
+      wx.showToast({ title: "功能正在准备中", icon: "none" });
+    }
   },
 
   onLogout() {

@@ -1,12 +1,46 @@
 <view class="page">
-  <text class="title">情侣空间</text>
-  <view class="backend-status {{backendStatus}}">
-    <text>{{backendMessage}}</text>
+  <view class="topbar">
+    <view>
+      <text class="brand">MikYao星球 <text class="heart">♥</text></text>
+      <text class="tagline">属于我们的小星球</text>
+    </view>
+    <view class="header-actions">
+      <view class="round-action" bindtap="onQuickAction" data-key="anniversary">⌑</view>
+      <view class="round-action" bindtap="openNotificationSettings">♧</view>
+    </view>
   </view>
-  <text wx:if="{{loading}}" class="message">正在读取账户</text>
-  <block wx:else>
-    <text class="message">你好，{{displayName}}</text>
-    <button bindtap="openNotificationSettings">通知设置</button>
-    <button class="secondary" bindtap="onLogout">退出登录</button>
-  </block>
+
+  <view class="backend-status {{backendStatus}}"><view class="status-dot"></view><text>{{backendMessage}}</text></view>
+  <image class="couple-hero" src="/assets/couple-hero.png" mode="aspectFill" />
+
+  <view class="love-note"><text class="note-heart">♥</text><text>一起走过的每一天，都是我们的星光 ✨</text><text class="note-arrow">›</text></view>
+
+  <view class="quick-actions">
+    <view wx:for="{{quickActions}}" wx:key="key" class="quick-action" bindtap="onQuickAction" data-key="{{item.key}}">
+      <view class="quick-icon {{item.tone}}"><text>{{item.icon}}</text></view>
+      <text>{{item.label}}</text>
+    </view>
+  </view>
+
+  <view class="dashboard">
+    <view class="card plan-card">
+      <view class="card-heading"><text>♟ 今日计划</text><text class="all-link">全部 ›</text></view>
+      <view wx:for="{{todayPlans}}" wx:key="title" class="plan-row"><view class="checkbox"></view><text class="plan-title">{{item.title}} {{item.emoji}}</text><text class="plan-time">{{item.time}}</text></view>
+      <view class="add-plan" bindtap="onAddPlan">＋ 添加计划</view>
+    </view>
+    <view class="card mood-card">
+      <view class="card-heading"><text>今日心情</text></view>
+      <view class="mood-pair"><view><text class="dog-face">◕ᴥ◕</text><text>开心</text></view><text class="mood-and">&amp;</text><view><text class="dog-face warm">◕ᴥ◕</text><text>有点累</text></view></view>
+    </view>
+    <view class="memory-card" bindtap="onQuickAction" data-key="journal"><view><text class="memory-title">记录我们的日常吧</text><text class="memory-copy">留下每一个温暖的瞬间</text></view><text class="camera">▣</text></view>
+    <view class="weather-card"><view><text class="weather-city">杭州 · 晴天</text><text class="temperature">25<text>°C</text></text><text class="weather-copy">空气良好 🌿</text></view><text class="sun">☀</text></view>
+  </view>
+
+  <view class="bottom-nav">
+    <view class="nav-item active" bindtap="onTabTap" data-tab="home"><text>⌂</text><text>首页</text></view>
+    <view class="nav-item" bindtap="onTabTap" data-tab="wish"><text>♡</text><text>愿望</text></view>
+    <view class="nav-heart" bindtap="onQuickAction" data-key="checkin">♥</view>
+    <view class="nav-item" bindtap="onTabTap" data-tab="journal"><text>▤</text><text>记录</text></view>
+    <view class="nav-item" bindtap="onTabTap" data-tab="profile"><text>♙</text><text>我的</text></view>
+  </view>
 </view>

@@ -9,12 +9,12 @@ Page({
     backendStatus: "checking",
     backendMessage: "正在连接后端服务",
     quickActions: [
-      { key: "todos", icon: "☷", label: "待办清单", tone: "peach" },
-      { key: "wishes", icon: "☆", label: "愿望清单", tone: "gold" },
-      { key: "anniversary", icon: "♡", label: "纪念日", tone: "rose" },
-      { key: "meal", icon: "♨", label: "今天吃什么", tone: "mint" },
-      { key: "checkin", icon: "⌾", label: "一键报备", tone: "sky" },
-      { key: "journal", icon: "▤", label: "日常记录", tone: "lilac" },
+      { key: "todos", asset: "todo.png", label: "待办清单" },
+      { key: "wishes", asset: "wish.png", label: "愿望清单" },
+      { key: "anniversary", asset: "anniversary.png", label: "纪念日" },
+      { key: "meal", asset: "meal.png", label: "今天吃什么" },
+      { key: "checkin", asset: "checkin.png", label: "一键报备" },
+      { key: "journal", asset: "journal.png", label: "日常记录" },
     ],
     todayPlans: [
       { title: "一起吃早餐", emoji: "🍞", time: "08:30" },

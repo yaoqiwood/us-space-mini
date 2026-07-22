@@ -1,46 +1,52 @@
 <view class="page">
   <view class="topbar">
     <view>
-      <text class="brand">MikYao星球 <text class="heart">♥</text></text>
+      <view class="brand">MikYao星球 <image class="brand-heart" src="/assets/icon/brand-heart.png" mode="aspectFit" /></view>
       <text class="tagline">属于我们的小星球</text>
     </view>
     <view class="header-actions">
-      <view class="round-action" bindtap="onQuickAction" data-key="anniversary">⌑</view>
-      <view class="round-action" bindtap="openNotificationSettings">♧</view>
+      <view class="round-action" bindtap="onQuickAction" data-key="anniversary"><image class="round-action-icon" src="/assets/icon/header-calendar.png" mode="aspectFit" /></view>
+      <view class="round-action" bindtap="openNotificationSettings"><image class="round-action-icon" src="/assets/icon/header-bell.png" mode="aspectFit" /></view>
     </view>
   </view>
 
-  <view class="backend-status {{backendStatus}}"><view class="status-dot"></view><text>{{backendMessage}}</text></view>
-  <image class="couple-hero" src="/assets/couple-hero.png" mode="aspectFill" />
+  <view class="couple-hero">
+    <image class="couple-hero-background" src="/assets/home-couple-hero-clean.png" mode="aspectFill" />
+    <view class="anniversary-copy">
+      <text class="anniversary-label">我们在一起</text>
+      <view class="anniversary-count"><text class="anniversary-days">520</text><text class="anniversary-unit">天</text></view>
+      <view class="anniversary-date"><image class="date-heart" src="/assets/icon/love-note-heart.png" mode="aspectFit" /><text>2023.12.01 我们的纪念日</text></view>
+    </view>
+  </view>
 
-  <view class="love-note"><text class="note-heart">♥</text><text>一起走过的每一天，都是我们的星光 ✨</text><text class="note-arrow">›</text></view>
+  <view class="love-note"><image class="note-heart" src="/assets/icon/love-note-heart.png" mode="aspectFit" /><text>一起走过的每一天，都是我们的星光 ✨</text><image class="note-arrow" src="/assets/icon/chevron-right.png" mode="aspectFit" /></view>
 
   <view class="quick-actions">
     <view wx:for="{{quickActions}}" wx:key="key" class="quick-action" bindtap="onQuickAction" data-key="{{item.key}}">
-      <view class="quick-icon {{item.tone}}"><text>{{item.icon}}</text></view>
+      <image class="quick-icon" src="/assets/icon/{{item.asset}}" mode="aspectFit" />
       <text>{{item.label}}</text>
     </view>
   </view>
 
   <view class="dashboard">
     <view class="card plan-card">
-      <view class="card-heading"><text>♟ 今日计划</text><text class="all-link">全部 ›</text></view>
-      <view wx:for="{{todayPlans}}" wx:key="title" class="plan-row"><view class="checkbox"></view><text class="plan-title">{{item.title}} {{item.emoji}}</text><text class="plan-time">{{item.time}}</text></view>
+      <view class="card-heading"><view class="plan-title-heading"><image class="plan-heading-icon" src="/assets/icon/plan.png" mode="aspectFit" /><text>今日计划</text></view><view class="all-link"><text>全部</text><image class="all-link-arrow" src="/assets/icon/chevron-right.png" mode="aspectFit" /></view></view>
+      <view wx:for="{{todayPlans}}" wx:key="title" class="plan-row"><image class="checkbox-icon" src="/assets/icon/checkbox-empty.png" mode="aspectFit" /><text class="plan-title">{{item.title}} {{item.emoji}}</text><text class="plan-time">{{item.time}}</text></view>
       <view class="add-plan" bindtap="onAddPlan">＋ 添加计划</view>
     </view>
     <view class="card mood-card">
       <view class="card-heading"><text>今日心情</text></view>
-      <view class="mood-pair"><view><text class="dog-face">◕ᴥ◕</text><text>开心</text></view><text class="mood-and">&amp;</text><view><text class="dog-face warm">◕ᴥ◕</text><text>有点累</text></view></view>
+      <view class="mood-pair"><view class="mood-option"><image class="mood-dog" src="/assets/icon/mood-happy.png" mode="aspectFit" /><text>开心</text></view><text class="mood-and">&amp;</text><view class="mood-option"><image class="mood-dog" src="/assets/icon/mood-tired.png" mode="aspectFit" /><text>有点累</text></view></view>
     </view>
-    <view class="memory-card" bindtap="onQuickAction" data-key="journal"><view><text class="memory-title">记录我们的日常吧</text><text class="memory-copy">留下每一个温暖的瞬间</text></view><text class="camera">▣</text></view>
-    <view class="weather-card"><view><text class="weather-city">杭州 · 晴天</text><text class="temperature">25<text>°C</text></text><text class="weather-copy">空气良好 🌿</text></view><text class="sun">☀</text></view>
+    <view class="memory-card" bindtap="onQuickAction" data-key="journal"><view><text class="memory-title">记录我们的日常吧</text><text class="memory-copy">留下每一个温暖的瞬间</text></view><image class="memory-camera" src="/assets/icon/memory-camera.png" mode="aspectFit" /></view>
+    <view class="weather-card"><view><text class="weather-city">杭州 · 晴天</text><text class="temperature">25<text>°C</text></text><text class="weather-copy">空气良好 🌿</text></view><image class="sun" src="/assets/icon/weather-sun.png" mode="aspectFit" /></view>
   </view>
 
   <view class="bottom-nav">
-    <view class="nav-item active" bindtap="onTabTap" data-tab="home"><text>⌂</text><text>首页</text></view>
-    <view class="nav-item" bindtap="onTabTap" data-tab="wish"><text>♡</text><text>愿望</text></view>
-    <view class="nav-heart" bindtap="onQuickAction" data-key="checkin">♥</view>
-    <view class="nav-item" bindtap="onTabTap" data-tab="journal"><text>▤</text><text>记录</text></view>
-    <view class="nav-item" bindtap="onTabTap" data-tab="profile"><text>♙</text><text>我的</text></view>
+    <view class="nav-item active" bindtap="onTabTap" data-tab="home"><image class="nav-icon" src="/assets/icon/nav-home.png" mode="aspectFit" /><text>首页</text></view>
+    <view class="nav-item" bindtap="onTabTap" data-tab="wish"><image class="nav-icon" src="/assets/icon/nav-wish.png" mode="aspectFit" /><text>愿望</text></view>
+    <view class="nav-heart" bindtap="onQuickAction" data-key="checkin"><image class="nav-heart-icon" src="/assets/icon/nav-heart.png" mode="aspectFit" /></view>
+    <view class="nav-item" bindtap="onTabTap" data-tab="journal"><image class="nav-icon" src="/assets/icon/nav-record.png" mode="aspectFit" /><text>记录</text></view>
+    <view class="nav-item" bindtap="onTabTap" data-tab="profile"><image class="nav-icon" src="/assets/icon/nav-profile.png" mode="aspectFit" /><text>我的</text></view>
   </view>
 </view>

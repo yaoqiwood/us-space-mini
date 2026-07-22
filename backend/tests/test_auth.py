@@ -39,7 +39,7 @@ def test_unbound_wechat_login_requires_account_binding(client: TestClient) -> No
     assert response.status_code == 200
     assert response.json()["status"] == "binding_required"
     assert "binding_token" in response.json()
-    assert "openid" not in response.json()
+    assert response.json()["openid"] == "openid-new-device"
 
 
 def test_first_bind_then_wechat_login_issues_session(client: TestClient, db_session: Session) -> None:
@@ -58,6 +58,7 @@ def test_first_bind_then_wechat_login_issues_session(client: TestClient, db_sess
 
     assert bind.status_code == 200
     assert bind.json()["status"] == "authenticated"
+    assert bind.json()["openid"] == "openid-alice-phone"
     assert bind.json()["token_type"] == "bearer"
     assert db_session.scalar(select(WeChatIdentity).where(WeChatIdentity.openid == "openid-alice-phone"))
 
@@ -65,6 +66,7 @@ def test_first_bind_then_wechat_login_issues_session(client: TestClient, db_sess
 
     assert second_login.status_code == 200
     assert second_login.json()["status"] == "authenticated"
+    assert second_login.json()["openid"] == "openid-alice-phone"
 
 
 def test_existing_binding_cannot_be_taken_by_another_account(

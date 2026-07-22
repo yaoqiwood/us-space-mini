@@ -16,16 +16,22 @@
   </view>
 
   <view class="auth-panel">
-    <view wx:if="{{checkingWeChat}}" class="auth-state">
+    <view wx:if="{{!hasEntered}}" class="auth-state">
+      <text class="auth-title">欢迎来到我们的星球</text>
+      <text class="auth-copy">准备好和我们一起出发了吗？</text>
+      <button class="entry-button" bindtap="onEnter">进入</button>
+    </view>
+
+    <view wx:elif="{{checkingWeChat}}" class="auth-state">
       <text class="auth-title">欢迎来到我们的星球</text>
       <text class="auth-copy">正在验证你的身份...</text>
       <view class="orbit-loader"><view class="orbit-dot"></view></view>
-      <text class="auth-hint">正在获取你的信息</text>
+      <text class="auth-hint">{{connectionMessage}}</text>
     </view>
 
-    <view wx:elif="{{bindingToken}}" class="form">
+    <view wx:elif="{{needsAccountBinding}}" class="form">
       <text class="auth-title">欢迎来到我们的星球</text>
-      <text class="auth-copy">请登录账号，完成微信身份绑定</text>
+      <text class="auth-copy">请登录账号，完成身份绑定</text>
       <input class="login-input" placeholder="账号" value="{{username}}" bindinput="onUsernameInput" />
       <input class="login-input" password placeholder="密码" value="{{password}}" bindinput="onPasswordInput" />
       <button class="login-button" loading="{{submitting}}" bindtap="onLogin">登录并进入星球</button>
@@ -35,7 +41,7 @@
     <view wx:else class="auth-state error-state">
       <text class="auth-title">暂时无法抵达星球</text>
       <text class="auth-copy">{{errorMessage || "无法验证微信身份"}}</text>
-      <button class="retry-button" bindtap="verifyBackendAndLogin">重新尝试</button>
+      <button class="retry-button" bindtap="verifyMockIdentity">重新尝试</button>
     </view>
   </view>
 

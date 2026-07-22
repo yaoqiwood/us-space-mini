@@ -21,12 +21,14 @@ class AuthenticatedResponse(BaseModel):
     status: Literal["authenticated"] = "authenticated"
     access_token: str
     refresh_token: str
+    openid: str
     token_type: Literal["bearer"] = "bearer"
 
 
 class BindingRequiredResponse(BaseModel):
     status: Literal["binding_required"] = "binding_required"
     binding_token: str
+    openid: str
 
 
 class CurrentUserResponse(BaseModel):

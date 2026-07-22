@@ -87,3 +87,12 @@ export function request<T>(path: string, options: ApiRequestOptions = {}): Promi
 export function checkApiHealth(): Promise<{ status: string }> {
   return request<{ status: string }>("/health", { authenticated: false });
 }
+
+export interface EntryProbeResponse {
+  status: "ok";
+  message: string;
+}
+
+export function probeEntryService(): Promise<EntryProbeResponse> {
+  return request<EntryProbeResponse>("/entry/probe", { authenticated: false });
+}

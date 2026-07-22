@@ -1,18 +1,20 @@
-import { checkApiHealth } from "../../utils/api";
-import { bindCurrentWeChatAccount, loginWithWeChat } from "../../utils/session";
+import { getMockBoundUser, getMockOpenId, loginWithMockAccount } from "../../utils/mock-auth";
 
 Page({
   data: {
     username: "",
     password: "",
     submitting: false,
-    checkingWeChat: true,
-    bindingToken: "",
+    hasEntered: false,
+    checkingWeChat: false,
+    needsAccountBinding: false,
     errorMessage: "",
+    connectionMessage: "正在读取本地模拟身份...",
   },
 
-  onLoad() {
-    this.verifyBackendAndLogin();
+  onEnter() {
+    this.setData({ hasEntered: true });
+    this.verifyMockIdentity();
   },
 
   onUsernameInput(event: WechatMiniprogram.Input) {
@@ -23,42 +25,29 @@ Page({
     this.setData({ password: event.detail.value });
   },
 
-  async beginWeChatLogin() {
-    this.setData({ checkingWeChat: true, errorMessage: "" });
-    try {
-      const result = await loginWithWeChat();
-      if (result.status === "authenticated") {
-        wx.reLaunch({ url: "/pages/home/index" });
-        return;
-      }
-      this.setData({ bindingToken: result.binding_token });
-    } catch (error) {
-      this.setData({ errorMessage: (error as Error).message || "微信登录暂不可用" });
-    } finally {
-      this.setData({ checkingWeChat: false });
-    }
-  },
-
-  async verifyBackendAndLogin() {
-    this.setData({ checkingWeChat: true, errorMessage: "", bindingToken: "" });
-    try {
-      await checkApiHealth();
-    } catch (error) {
-      this.setData({ errorMessage: `无法连接后端服务：${(error as Error).message}` });
-      this.setData({ checkingWeChat: false });
+  verifyMockIdentity() {
+    this.setData({
+      checkingWeChat: true,
+      errorMessage: "",
+      needsAccountBinding: false,
+      connectionMessage: "正在读取本地模拟身份...",
+    });
+    const openid = getMockOpenId();
+    if (getMockBoundUser(openid)) {
+      wx.reLaunch({ url: "/pages/home/index" });
       return;
     }
-    await this.beginWeChatLogin();
+    this.setData({ needsAccountBinding: true, checkingWeChat: false });
   },
 
-  async onLogin() {
-    if (!this.data.bindingToken) {
-      this.verifyBackendAndLogin();
+  onLogin() {
+    if (!this.data.needsAccountBinding) {
+      this.verifyMockIdentity();
       return;
     }
     this.setData({ submitting: true, errorMessage: "" });
     try {
-      await bindCurrentWeChatAccount(this.data.username, this.data.password, this.data.bindingToken);
+      loginWithMockAccount(this.data.username, this.data.password, getMockOpenId());
       wx.reLaunch({ url: "/pages/home/index" });
     } catch (error) {
       this.setData({ errorMessage: (error as Error).message || "账号绑定失败" });

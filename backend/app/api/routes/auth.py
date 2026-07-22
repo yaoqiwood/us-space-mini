@@ -33,7 +33,7 @@ from app.services.wechat import WeChatClient, WeChatExchangeError, get_wechat_cl
 router = APIRouter(prefix="/auth")
 
 
-def issue_session(db: Session, user: User) -> AuthenticatedResponse:
+def issue_session(db: Session, user: User, openid: str) -> AuthenticatedResponse:
     session_id = new_session_id()
     refresh_token, expires_at = create_refresh_token(user.id, session_id)
     db.add(
@@ -48,6 +48,7 @@ def issue_session(db: Session, user: User) -> AuthenticatedResponse:
     return AuthenticatedResponse(
         access_token=create_access_token(user.id),
         refresh_token=refresh_token,
+        openid=openid,
     )
 
 
@@ -66,11 +67,14 @@ def login_with_wechat(
         select(WeChatIdentity).where(WeChatIdentity.openid == wechat_session.openid)
     )
     if identity is None:
-        return BindingRequiredResponse(binding_token=create_binding_token(wechat_session.openid))
+        return BindingRequiredResponse(
+            binding_token=create_binding_token(wechat_session.openid),
+            openid=wechat_session.openid,
+        )
     if not identity.user.is_active:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Account is inactive")
 
-    response = issue_session(db, identity.user)
+    response = issue_session(db, identity.user, wechat_session.openid)
     db.commit()
     return response
 
@@ -99,7 +103,7 @@ def bind_wechat_identity(
 
     db.add(WeChatIdentity(user_id=user.id, openid=openid))
     try:
-        response = issue_session(db, user)
+        response = issue_session(db, user, openid)
         db.commit()
     except IntegrityError as error:
         db.rollback()
@@ -131,11 +135,11 @@ def refresh_session(
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token is invalid")
 
     user = db.get(User, user_id)
-    if user is None or not user.is_active:
+    if user is None or not user.is_active or user.wechat_identity is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Account is inactive")
 
     refresh_session.revoked_at = now
-    response = issue_session(db, user)
+    response = issue_session(db, user, user.wechat_identity.openid)
     db.commit()
     return response
 

@@ -1,55 +1,74 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-set -Eeuo pipefail
+set -eu
 
-backend_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-run_dir="$backend_dir/.run"
-pid_file="$run_dir/uvicorn.pid"
-log_file="$run_dir/uvicorn.log"
-api_health_url="http://127.0.0.1:8000/v1/health"
+backend_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+pid_file="$backend_dir/.run/uvicorn.pid"
+api_port=8000
+uvicorn_pattern="uvicorn[[:space:]]+app\.main:app.*--port[[:space:]]+$api_port"
 
 if ! command -v uv >/dev/null 2>&1; then
   printf 'uv is required. Install uv before running this script.\n' >&2
   exit 1
 fi
 
-mkdir -p "$run_dir"
-if [[ -f "$pid_file" ]]; then
-  pid="$(<"$pid_file")"
-  if [[ "$pid" =~ ^[0-9]+$ ]] && kill -0 "$pid" 2>/dev/null; then
-    printf 'Development API is already running (PID %s).\n' "$pid"
-    exit 0
+list_api_pids() {
+  pgrep -f "$uvicorn_pattern" 2>/dev/null || true
+}
+
+port_is_in_use() {
+  if command -v fuser >/dev/null 2>&1; then
+    fuser -s -n tcp "$api_port"
+    return
   fi
-  if [[ "$pid" =~ ^[0-9]+$ ]] && [[ -d "/proc/$pid" ]]; then
-    printf 'Cannot manage the existing development API (PID %s).\n' "$pid" >&2
+  if command -v lsof >/dev/null 2>&1; then
+    lsof -tiTCP:"$api_port" -sTCP:LISTEN >/dev/null 2>&1
+    return
+  fi
+  return 1
+}
+
+stop_running_api() {
+  api_pids=$(list_api_pids)
+  if [ -n "$api_pids" ]; then
+    printf 'Stopping existing development API process(es): %s\n' "$api_pids"
+    kill -TERM $api_pids 2>/dev/null || true
+
+    attempt=0
+    remaining="$api_pids"
+    while [ "$attempt" -lt 10 ] && [ -n "$remaining" ]; do
+      next_remaining=""
+      for pid in $remaining; do
+        if kill -0 "$pid" 2>/dev/null; then
+          next_remaining="$next_remaining $pid"
+        fi
+      done
+      remaining=$(printf '%s' "$next_remaining" | sed 's/^ *//')
+      [ -z "$remaining" ] || sleep 1
+      attempt=$((attempt + 1))
+    done
+
+    if [ -n "$remaining" ]; then
+      printf 'Force stopping development API process(es): %s\n' "$remaining" >&2
+      kill -KILL $remaining 2>/dev/null || true
+    fi
+  fi
+
+  rm -f "$pid_file"
+  if port_is_in_use; then
+    printf 'Port %s is still occupied by a process that is not this development API.\n' "$api_port" >&2
+    printf 'Refusing to terminate an unknown process. Stop it manually, then run this script again.\n' >&2
     exit 1
   fi
-  rm -f "$pid_file"
-fi
+}
+
+stop_running_api
 
 cd "$backend_dir"
 uv run alembic upgrade head
 
-setsid uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload --reload-dir "$backend_dir/app" \
-  >"$log_file" 2>&1 &
-pid=$!
-printf '%s\n' "$pid" >"$pid_file"
+printf 'Starting development API in the foreground.\n'
+printf 'API:  http://127.0.0.1:%s/v1/health\n' "$api_port"
+printf 'Docs: http://127.0.0.1:%s/docs\n\n' "$api_port"
 
-printf 'Starting development API (PID %s).\n' "$pid"
-printf 'API:  http://127.0.0.1:8000/v1/health\n'
-printf 'Docs: http://127.0.0.1:8000/docs\n\n'
-
-if command -v curl >/dev/null 2>&1; then
-  for _ in {1..10}; do
-    if health_response="$(curl --fail --silent "$api_health_url" 2>/dev/null)"; then
-      printf '%s\n' "$health_response"
-      exit 0
-    fi
-    sleep 1
-  done
-  kill -- "-$pid" 2>/dev/null || true
-  rm -f "$pid_file"
-  printf 'API did not become healthy within 10 seconds. Check logs at:\n' >&2
-  printf '%s\n' "$log_file" >&2
-  exit 1
-fi
+exec uv run uvicorn app.main:app --host 127.0.0.1 --port "$api_port" --reload --reload-dir "$backend_dir/app"

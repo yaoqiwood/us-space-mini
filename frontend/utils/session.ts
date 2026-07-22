@@ -4,12 +4,14 @@ export interface AuthenticatedSession {
   status: "authenticated";
   access_token: string;
   refresh_token: string;
+  openid: string;
   token_type: "bearer";
 }
 
 export interface BindingRequired {
   status: "binding_required";
   binding_token: string;
+  openid: string;
 }
 
 export type WeChatLoginResult = AuthenticatedSession | BindingRequired;
@@ -47,6 +49,14 @@ function saveSession(session: AuthenticatedSession): void {
   getApp<CoupleSpaceApp>().globalData.accessToken = session.access_token;
 }
 
+export function saveOpenId(openid: string): void {
+  wx.setStorageSync("openid", openid);
+}
+
+export function getStoredOpenId(): string {
+  return wx.getStorageSync("openid") || "";
+}
+
 export function clearSession(): void {
   wx.removeStorageSync("access_token");
   wx.removeStorageSync("refresh_token");
@@ -60,6 +70,7 @@ export async function loginWithWeChat(): Promise<WeChatLoginResult> {
     data: { code },
     authenticated: false,
   });
+  saveOpenId(result.openid);
   if (result.status === "authenticated") {
     saveSession(result);
   }
